@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Alco Meter</string>
+    <string name="alcohol_meter">Alcohol meter</string>
+    <string name="BAC_value" />
+    <string name="weight">Weight (kg)</string>
+    <string name="calc_button">Calculate</string>
+    <string name="gender">Gender</string>
+    <string name="alcohol_consumed">Alcohol Consumed</string>
+    <string name="promile">0,75 ‰</string>
+    <string name="plus">+</string>
+    <string-array name="gender_array">
+        <item>Female</item>
+        <item>Male</item>
+        <item>Transgender</item>
+    </string-array>
+</resources>
