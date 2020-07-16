@@ -1,14 +1,19 @@
 package com.jankuv.alcometer
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     var drinks: ArrayList<Shot> = arrayListOf()
 
+    @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,6 +35,22 @@ class MainActivity : AppCompatActivity() {
         add_drink_button.setOnClickListener {
             addShot()
         }
+
+        //getting recyclerview from xml
+        val recyclerView = findViewById(R.id.drinks_list) as RecyclerView
+
+        //adding a layoutmanager
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
+
+       /* drinks.add(Shot("Beer 10°",  AlcoholMenuEnum.BEER10.volume, AlcoholMenuEnum.BEER10.percentage))
+        drinks.add(Shot("Beer 10°",  AlcoholMenuEnum.BEER10.volume, AlcoholMenuEnum.BEER10.percentage))
+        drinks.add(Shot("Beer 10°",  AlcoholMenuEnum.BEER10.volume, AlcoholMenuEnum.BEER10.percentage))
+        drinks.add(Shot("Beer 10°",  AlcoholMenuEnum.BEER10.volume, AlcoholMenuEnum.BEER10.percentage))
+        drinks.add(Shot("Beer 10°",  AlcoholMenuEnum.BEER10.volume, AlcoholMenuEnum.BEER10.percentage))*/
+
+        val drink_list_adapter = CustomAdapter(drinks)
+
+        recyclerView.adapter = drink_list_adapter
     }
 
     /*
