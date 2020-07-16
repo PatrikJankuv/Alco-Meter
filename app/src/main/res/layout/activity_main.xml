@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/calculate"
         style="@style/description_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -92,6 +92,7 @@
         android:layout_marginEnd="16dp"
         android:autofillHints="@string/weight"
         android:ems="3"
+        android:maxLength="3"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"

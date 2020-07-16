@@ -3,10 +3,9 @@ package com.jankuv.alcometer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,27 +14,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val genders = resources.getStringArray(R.array.gender_array)
-        val spinner = findViewById<Spinner>(R.id.gender_select)
+        val adapter = ArrayAdapter.createFromResource(this, R.array.gender_array, android.R.layout.simple_spinner_item)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        if (spinner != null) {
-            val adapter = ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, genders)
-            spinner.adapter = adapter
+        gender_select.adapter = adapter
+
+        calculate.setOnClickListener {
+            getGender(it)
         }
+    }
 
-        /*spinner.onItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>,
-                                        view: View, position: Int, id: Long) {
-                Toast.makeText(this@MainActivity,
-                    getString(R.string.BAC_value) + " " +
-                            "" + genders[position], Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // write code to perform some action
-            }
-        }*/
+    fun getGender(view: View){
+        Toast.makeText(this, "Gender selected " + gender_select.selectedItem.toString(), Toast.LENGTH_LONG).show()
     }
 }
