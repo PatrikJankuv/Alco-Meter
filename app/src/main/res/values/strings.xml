@@ -13,4 +13,13 @@
         <item>Male</item>
         <item>Transgender</item>
     </string-array>
+    <string-array name="drinks_array">
+        <item>Beer 10°</item>
+        <item>Beer 12°</item>
+        <item>Glass of wine</item>
+        <item>Vodka (40%) 0,5 dl</item>
+        <item>Gin (35%) 0,5 dl</item>
+        <item>Slivovica (52%) 0,5 dl</item>
+        <item>Black Tatra tea (72%) 0,5 dl</item>
+    </string-array>
 </resources>
