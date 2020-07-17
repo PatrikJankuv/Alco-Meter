@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.LocalDateTime
+import java.util.function.Consumer
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
@@ -20,17 +21,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //dropdown gender
-        val adapter = ArrayAdapter.createFromResource(this, R.array.gender_array, android.R.layout.simple_spinner_item)
+        val adapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.gender_array,
+            android.R.layout.simple_spinner_item
+        )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         gender_select.adapter = adapter
 
         //dropdown drinks
-        val drinks_adapter = ArrayAdapter.createFromResource(this, R.array.drinks_array, android.R.layout.simple_spinner_item)
-        drinks_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        drinks_spinner.adapter = drinks_adapter
+        val drinksAdapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.drinks_array,
+            android.R.layout.simple_spinner_item
+        )
+        drinksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        drinks_spinner.adapter = drinksAdapter
 
         calculate.setOnClickListener {
-            calculate_BAC()
+            calculateBac()
         }
 
         add_drink_button.setOnClickListener {
@@ -43,38 +52,74 @@ class MainActivity : AppCompatActivity() {
     }
 
     /*
-    Get gender from
-     */
-    private fun getGender() {
-        Toast.makeText(this, "Gender selected " + gender_select.selectedItem.toString(), Toast.LENGTH_LONG).show()
-    }
-
-    /*
     add shot to list of drinks
      */
-    fun addShot() {
+    private fun addShot() {
         val drink_name = drinks_spinner.selectedItem.toString()
 
-        if(drink_name == "Beer 10°"){
-            drinks.add(Shot(drink_name,  AlcoholMenuEnum.BEER10.volume, AlcoholMenuEnum.BEER10.percentage, LocalDateTime.now()))
-        }
-        else if(drink_name == "Beer 12°"){
-            drinks.add(Shot(drink_name,  AlcoholMenuEnum.BEER12.volume, AlcoholMenuEnum.BEER12.percentage, LocalDateTime.now()))
-        }
-        else if(drink_name == "Glass of wine"){
-            drinks.add(Shot(drink_name,  AlcoholMenuEnum.WINE.volume, AlcoholMenuEnum.WINE.percentage, LocalDateTime.now()))
-        }
-        else if(drink_name == "Vodka (40%) 0,5 dl"){
-            drinks.add(Shot(drink_name,  AlcoholMenuEnum.VODKA.volume, AlcoholMenuEnum.VODKA.percentage, LocalDateTime.now()))
-        }
-        else if(drink_name == "Gin (35%) 0,5 dl"){
-            drinks.add(Shot(drink_name,  AlcoholMenuEnum.GIN.volume, AlcoholMenuEnum.GIN.percentage, LocalDateTime.now()))
-        }
-        else if(drink_name == "Slivovica (52%) 0,5 dl"){
-            drinks.add(Shot(drink_name,  AlcoholMenuEnum.SPIRIT.volume, AlcoholMenuEnum.SPIRIT.percentage, LocalDateTime.now()))
-        }
-        else if(drink_name == "Black Tatra tea (72%) 0,5 dl"){
-            drinks.add(Shot(drink_name,  AlcoholMenuEnum.TATRA_TEA.volume, AlcoholMenuEnum.TATRA_TEA.percentage, LocalDateTime.now()))
+        if (drink_name == "Beer 10°") {
+            drinks.add(
+                Shot(
+                    drink_name,
+                    AlcoholMenuEnum.BEER10.volume,
+                    AlcoholMenuEnum.BEER10.percentage,
+                    LocalDateTime.now()
+                )
+            )
+        } else if (drink_name == "Beer 12°") {
+            drinks.add(
+                Shot(
+                    drink_name,
+                    AlcoholMenuEnum.BEER12.volume,
+                    AlcoholMenuEnum.BEER12.percentage,
+                    LocalDateTime.now()
+                )
+            )
+        } else if (drink_name == "Glass of wine") {
+            drinks.add(
+                Shot(
+                    drink_name,
+                    AlcoholMenuEnum.WINE.volume,
+                    AlcoholMenuEnum.WINE.percentage,
+                    LocalDateTime.now()
+                )
+            )
+        } else if (drink_name == "Vodka (40%) 0,5 dl") {
+            drinks.add(
+                Shot(
+                    drink_name,
+                    AlcoholMenuEnum.VODKA.volume,
+                    AlcoholMenuEnum.VODKA.percentage,
+                    LocalDateTime.now()
+                )
+            )
+        } else if (drink_name == "Gin (35%) 0,5 dl") {
+            drinks.add(
+                Shot(
+                    drink_name,
+                    AlcoholMenuEnum.GIN.volume,
+                    AlcoholMenuEnum.GIN.percentage,
+                    LocalDateTime.now()
+                )
+            )
+        } else if (drink_name == "Slivovica (52%) 0,5 dl") {
+            drinks.add(
+                Shot(
+                    drink_name,
+                    AlcoholMenuEnum.SPIRIT.volume,
+                    AlcoholMenuEnum.SPIRIT.percentage,
+                    LocalDateTime.now()
+                )
+            )
+        } else if (drink_name == "Black Tatra tea (72%) 0,5 dl") {
+            drinks.add(
+                Shot(
+                    drink_name,
+                    AlcoholMenuEnum.TATRA_TEA.volume,
+                    AlcoholMenuEnum.TATRA_TEA.percentage,
+                    LocalDateTime.now()
+                )
+            )
         }
 
         Toast.makeText(this, "Add $drink_name", Toast.LENGTH_LONG).show()
@@ -82,32 +127,56 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun calculate_BAC(){
-        val msg: String = weight_ediit.text.toString()
+    private fun calculateBac() {
+        val weightS: String = weight_ediit.text.toString()
 
-        //check if the EditText have values or not
-        if(msg.trim().length>0) {
-            Toast.makeText(applicationContext, "Message : "+msg, Toast.LENGTH_SHORT).show()
-        }else{
-            Toast.makeText(applicationContext, "Please enter some message! ", Toast.LENGTH_SHORT).show()
+        //check if the weight is set
+        if (weightS.trim().isEmpty()) {
+            Toast.makeText(applicationContext, "Please enter weight ", Toast.LENGTH_SHORT).show()
+        } else {
+            var message: String = ""
+            var weight = weightS.toInt() * 1000
+
+
+            val genderConst = getGenderConst(gender_select.selectedItem.toString())
+            var BAC = (alcoholConsumed() / (weight * genderConst)) * 100
+            var b = "%.3f".format(BAC)
+            message = "$b ‰"
+
+
+            bac_view.text = message
         }
     }
 
-    fun list_of_shots(){
+    private fun list_of_shots() {
         //getting recyclerview from xml
         val recyclerView = findViewById(R.id.drinks_list) as RecyclerView
 
         //adding a layoutmanager
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
 
-//        drinks.add(Shot("Beer 10°",  AlcoholMenuEnum.BEER10.volume, AlcoholMenuEnum.BEER10.percentage))
-//         drinks.add(Shot("Beer 10°",  AlcoholMenuEnum.BEER10.volume, AlcoholMenuEnum.BEER10.percentage))
-//         drinks.add(Shot("Beer 10°",  AlcoholMenuEnum.BEER10.volume, AlcoholMenuEnum.BEER10.percentage))
-//         drinks.add(Shot("Beer 10°",  AlcoholMenuEnum.BEER10.volume, AlcoholMenuEnum.BEER10.percentage))
-//         drinks.add(Shot("Beer 10°",  AlcoholMenuEnum.BEER10.volume, AlcoholMenuEnum.BEER10.percentage))
+        var drinkListAdapter = CustomAdapter(drinks)
 
-        val drink_list_adapter = CustomAdapter(drinks)
+        recyclerView.adapter = drinkListAdapter
+    }
 
-        recyclerView.adapter = drink_list_adapter
+    private fun getGenderConst(gender: String): Double {
+        if (gender == "Female") {
+            return Gender_const.FEMALE.r
+        } else if (gender == "Male") {
+            return Gender_const.MALE.r
+        }
+
+        return Gender_const.TRANS.r
+    }
+
+    private fun alcoholConsumed(): Double {
+        var alcohol: Double = 0.0
+
+        for (s in drinks) {
+            alcohol += s.alcohol_content()
+        }
+
+        return alcohol
     }
 }
