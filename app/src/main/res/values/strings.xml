@@ -6,7 +6,7 @@
     <string name="calc_button">Calculate</string>
     <string name="gender">Gender</string>
     <string name="alcohol_consumed">Alcohol Consumed</string>
-    <string name="promile">0,75 ‰</string>
+    <string name="promile">-- ‰</string>
     <string name="plus">+</string>
     <string-array name="gender_array">
         <item>Female</item>

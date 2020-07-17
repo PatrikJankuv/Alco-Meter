@@ -27,16 +27,15 @@
         style="@style/description_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="372dp"
         android:background="@drawable/rounded_button"
         android:padding="10dp"
         android:text="@string/calc_button"
+
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
         android:id="@+id/textView6"
@@ -119,20 +118,23 @@
         android:id="@+id/drinks_spinner"
         android:layout_width="260dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
+        android:layout_marginStart="@dimen/margin_wide"
         android:layout_marginTop="@dimen/margin_very_wide"
+        app:layout_constraintBottom_toTopOf="@+id/calculate"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/drinks_list"
         android:layout_width="match_parent"
         android:layout_height="223dp"
         android:layout_marginStart="@dimen/margin_wide"
-        android:layout_marginEnd="@dimen/margin_wide"
-        android:layout_marginTop="@dimen/margin_wide"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toTopOf="@+id/calculate"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/drinks_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/drinks_spinner"
+        app:layout_constraintVertical_bias="0.060000002" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

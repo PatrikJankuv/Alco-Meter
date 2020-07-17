@@ -30,8 +30,12 @@ class CustomAdapter(val userList: ArrayList<Shot>) : RecyclerView.Adapter<Custom
         fun bindItems(shot: Shot) {
             val textDrinkName = itemView.findViewById(R.id.drink_name) as TextView
             val textDrinkTime  = itemView.findViewById(R.id.time) as TextView
+            val textDrinkVolume = itemView.findViewById<TextView>(R.id.percentage_and_volume)
             textDrinkName.text = shot.drink
-            textDrinkTime.text = shot.volume.toString()
+            textDrinkTime.text = shot.time.toString()
+
+            val description = shot.percentage.toString() + "% " + shot.volume.toString() + " l"
+            textDrinkVolume.text = description
         }
     }
 }
