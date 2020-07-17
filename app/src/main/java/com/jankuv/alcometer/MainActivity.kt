@@ -9,11 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.time.LocalDateTime
-import java.util.function.Consumer
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
-    var drinks: ArrayList<Shot> = arrayListOf()
+    private var drinks: ArrayList<Shot> = arrayListOf()
 
     @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,73 +56,80 @@ class MainActivity : AppCompatActivity() {
     private fun addShot() {
         val drink_name = drinks_spinner.selectedItem.toString()
 
-        if (drink_name == "Beer 10°") {
-            drinks.add(
-                Shot(
-                    drink_name,
-                    AlcoholMenuEnum.BEER10.volume,
-                    AlcoholMenuEnum.BEER10.percentage,
-                    LocalDateTime.now()
+        when (drink_name) {
+            "Beer 10°" -> {
+                drinks.add(
+                    Shot(
+                        drink_name,
+                        AlcoholMenuEnum.BEER10.volume,
+                        AlcoholMenuEnum.BEER10.percentage,
+                        LocalDateTime.now()
+                    )
                 )
-            )
-        } else if (drink_name == "Beer 12°") {
-            drinks.add(
-                Shot(
-                    drink_name,
-                    AlcoholMenuEnum.BEER12.volume,
-                    AlcoholMenuEnum.BEER12.percentage,
-                    LocalDateTime.now()
+            }
+            "Beer 12°" -> {
+                drinks.add(
+                    Shot(
+                        drink_name,
+                        AlcoholMenuEnum.BEER12.volume,
+                        AlcoholMenuEnum.BEER12.percentage,
+                        LocalDateTime.now()
+                    )
                 )
-            )
-        } else if (drink_name == "Glass of wine") {
-            drinks.add(
-                Shot(
-                    drink_name,
-                    AlcoholMenuEnum.WINE.volume,
-                    AlcoholMenuEnum.WINE.percentage,
-                    LocalDateTime.now()
+            }
+            "Glass of wine" -> {
+                drinks.add(
+                    Shot(
+                        drink_name,
+                        AlcoholMenuEnum.WINE.volume,
+                        AlcoholMenuEnum.WINE.percentage,
+                        LocalDateTime.now()
+                    )
                 )
-            )
-        } else if (drink_name == "Vodka (40%) 0,5 dl") {
-            drinks.add(
-                Shot(
-                    drink_name,
-                    AlcoholMenuEnum.VODKA.volume,
-                    AlcoholMenuEnum.VODKA.percentage,
-                    LocalDateTime.now()
+            }
+            "Vodka (40%) 0,5 dl" -> {
+                drinks.add(
+                    Shot(
+                        drink_name,
+                        AlcoholMenuEnum.VODKA.volume,
+                        AlcoholMenuEnum.VODKA.percentage,
+                        LocalDateTime.now()
+                    )
                 )
-            )
-        } else if (drink_name == "Gin (35%) 0,5 dl") {
-            drinks.add(
-                Shot(
-                    drink_name,
-                    AlcoholMenuEnum.GIN.volume,
-                    AlcoholMenuEnum.GIN.percentage,
-                    LocalDateTime.now()
+            }
+            "Gin (35%) 0,5 dl" -> {
+                drinks.add(
+                    Shot(
+                        drink_name,
+                        AlcoholMenuEnum.GIN.volume,
+                        AlcoholMenuEnum.GIN.percentage,
+                        LocalDateTime.now()
+                    )
                 )
-            )
-        } else if (drink_name == "Slivovica (52%) 0,5 dl") {
-            drinks.add(
-                Shot(
-                    drink_name,
-                    AlcoholMenuEnum.SPIRIT.volume,
-                    AlcoholMenuEnum.SPIRIT.percentage,
-                    LocalDateTime.now()
+            }
+            "Slivovica (52%) 0,5 dl" -> {
+                drinks.add(
+                    Shot(
+                        drink_name,
+                        AlcoholMenuEnum.SPIRIT.volume,
+                        AlcoholMenuEnum.SPIRIT.percentage,
+                        LocalDateTime.now()
+                    )
                 )
-            )
-        } else if (drink_name == "Black Tatra tea (72%) 0,5 dl") {
-            drinks.add(
-                Shot(
-                    drink_name,
-                    AlcoholMenuEnum.TATRA_TEA.volume,
-                    AlcoholMenuEnum.TATRA_TEA.percentage,
-                    LocalDateTime.now()
+            }
+            "Black Tatra tea (72%) 0,5 dl" -> {
+                drinks.add(
+                    Shot(
+                        drink_name,
+                        AlcoholMenuEnum.TATRA_TEA.volume,
+                        AlcoholMenuEnum.TATRA_TEA.percentage,
+                        LocalDateTime.now()
+                    )
                 )
-            )
+            }
         }
 
         Toast.makeText(this, "Add $drink_name", Toast.LENGTH_LONG).show()
-//        drinks.add(Shot(drink_name, 7.0, AlcoholMenuEnum.BEER10.percentage))
     }
 
 
@@ -134,13 +140,13 @@ class MainActivity : AppCompatActivity() {
         if (weightS.trim().isEmpty()) {
             Toast.makeText(applicationContext, "Please enter weight ", Toast.LENGTH_SHORT).show()
         } else {
-            var message: String = ""
-            var weight = weightS.toInt() * 1000
+            val message: String
+            val weight = weightS.toInt() * 1000
 
 
             val genderConst = getGenderConst(gender_select.selectedItem.toString())
-            var BAC = (alcoholConsumed() / (weight * genderConst)) * 100
-            var b = "%.3f".format(BAC)
+            val BAC = (alcoholConsumed() / (weight * genderConst)) * 100
+            val b = "%.3f".format(BAC)
             message = "$b ‰"
 
 
@@ -155,7 +161,7 @@ class MainActivity : AppCompatActivity() {
         //adding a layoutmanager
         recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
 
-        var drinkListAdapter = CustomAdapter(drinks)
+        val drinkListAdapter = CustomAdapter(drinks)
 
         recyclerView.adapter = drinkListAdapter
     }
@@ -171,7 +177,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun alcoholConsumed(): Double {
-        var alcohol: Double = 0.0
+        var alcohol = 0.0
 
         for (s in drinks) {
             alcohol += s.alcohol_content()
